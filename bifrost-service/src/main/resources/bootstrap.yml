@@ -1,0 +1,48 @@
+# Tomcat
+server:
+  port: 5100
+  servlet:
+    context-path: /bifrost
+spring:
+  application:
+    name: Bifrost
+  profiles:
+    active: test
+  cloud:
+    nacos:
+      config:
+        enabled: true
+        # 配置中心地址
+        server-addr: 3.106.78.14:8848
+        # Nacos 认证用户
+        username: nacos
+        # Nacos 认证密码
+        password: P3hnQnwALUnqguf6VMsX
+        # 命名空间 常用场景之一是不同环境的配置的区分隔离，例如开发测试环境和生产环境的资源（如配置、服务）隔离等
+        namespace: ${spring.application.name}
+        refresh-enabled: false
+        # 配置文件后缀
+        file-extension: yml
+        extension-configs[0]:
+          dataId: ${spring.application.name}.${spring.cloud.nacos.config.file-extension}
+          group: BIZ_GROUP   # 默认为DEFAULT_GROUP
+          refresh: false   # 开启监听和自动刷新，默认为false
+        extension-configs[1]:
+          dataId: ${spring.application.name}-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+          group: BIZ_GROUP   # 默认为DEFAULT_GROUP
+          refresh: true   # 开启监听和自动刷新，默认为false
+        timeout: 5000 # 从Nacos读取配置项的超时时间
+        config-long-poll-timeout: 10000 # 长轮询超时时间
+        config-retry-time: 2000 # 轮询的重试时间
+        max-retry: 3 # 长轮询最大重试次数
+      discovery:
+        namespace: ${spring.application.name}
+        server-addr: test.dataour.com:18848
+        watch:
+          enabled: false
+
+  spring:
+    config:
+      import: classpath:bootstrap.yml
+    mvc:
+      throw-exception-if-no-handler-found: true

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dataour.bifrost.mapper.TenantDOMapper">
+    <resultMap id="BaseResultMap" type="com.dataour.bifrost.domain.TenantDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="tenant_id" jdbcType="INTEGER" property="tenantId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="en_name" jdbcType="VARCHAR" property="enName"/>
+        <result column="attributes" jdbcType="VARCHAR" property="attributes"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_update" jdbcType="TIMESTAMP" property="gmtUpdate"/>
+        <result column="created_by" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="updated_by" jdbcType="VARCHAR" property="updatedBy"/>
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+        <result column="description" jdbcType="LONGVARCHAR" property="description"/>
+    </resultMap>
+</mapper>

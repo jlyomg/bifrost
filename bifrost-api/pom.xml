@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.dataour</groupId>
+        <artifactId>bifrost</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>bifrost-api</artifactId>
+
+    <description>
+        Bifrost API
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dataour</groupId>
+            <artifactId>bifrost-common</artifactId>
+            <version>${bifrost.version}</version>
+        </dependency>
+        <!--        &lt;!&ndash; SpringCloud Openfeign &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.cloud</groupId>-->
+        <!--            <artifactId>spring-cloud-starter-openfeign</artifactId>-->
+        <!--            <version>3.1.5</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>io.github.openfeign</groupId>-->
+        <!--            <artifactId>feign-core</artifactId>-->
+        <!--            <version>11.10</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>io.github.openfeign</groupId>-->
+        <!--            <artifactId>feign-slf4j</artifactId>-->
+        <!--            <version>11.10</version>-->
+        <!--        </dependency>-->
+    </dependencies>
+</project>

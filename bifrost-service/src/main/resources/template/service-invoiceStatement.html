@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+    <style>
+        body,html{
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        }
+        p {
+            font-size: 15px;
+            line-height: 15px;
+        }
+        .invoice-box {
+            margin: auto;
+            padding: 0px;
+            font-size: 20px;
+            line-height: 20px;
+            color: #555;
+        }
+
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+        }
+
+        .invoice-box table td , .invoice-box table th {
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .invoice-box table tr td:nth-child(2) {
+            text-align: right;
+        }
+
+        .invoice-box table tr.top table td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.top table td.title {
+            font-size: 45px;
+            line-height: 45px;
+            color: #333;
+        }
+
+        .invoice-box table tr.information table td {
+            padding-bottom: 1px;
+        }
+
+        .invoice-box table tr.heading td {
+            font-size: 16px;
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+
+        .invoice-box table tr.details td {
+            font-size: 16px;
+            padding-bottom: 2px;
+        }
+
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+        }
+
+        .invoice-box table tr.item.last td {
+            border-bottom: none;
+        }
+
+        .invoice-box table tr.total td:nth-child(2) {
+            border-top: 1px solid #eee;
+            font-weight: bold;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .invoice-box table tr.top table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+
+            .invoice-box table tr.information table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+        }
+        table, th,td {
+        border: 0.1rem solid #9e9e9e;
+        }
+        /** RTL **/
+        .invoice-box.rtl {
+            direction: rtl;
+            font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        }
+
+        .invoice-box.rtl table {
+            text-align: right;
+        }
+
+        .invoice-box.rtl table tr td:nth-child(2) {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-box">
+        <table cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="6">
+                    <table>
+                        <tr>
+                            <td class="title" style="width:50%">
+                                <img src="http://54.252.160.10:4048/csg-3pl-logo-1.png" style="width: 80%; max-width: 150px" />
+                                <p>62 Goodall Close, Dandenong South</p>                                           
+                                <p>VIC 3175, Australia</p>
+                                <p>Phone: 0391176197</p>                                                                                                 
+                                <p>Email: accounts@csghub.com</p>                                                                                
+                            </td>
+                            <td class="title" style="width:50%">
+                               <h6 style="margin: 0">Statement</h6>
+                               <p>Date: {{statement.statementDate}}</p>
+                               <p>Client: {{profile.companyName}}</p>
+                               <p>Currency: {{CurrencySymbol}}</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr class="information">
+                <td colspan="6">
+                    <table>
+                        <tr>
+                            <td style="width:50%">
+                                <h2>Customer Details</h2>
+                                <p>{{profile.companyName}}<br /></p>
+                                <p>{{profile.bifrostAddress.unit}}, {{profile.bifrostAddress.address1}}, {{profile.bifrostAddress.address2}}<br /></p>
+                                <p>{{profile.bifrostAddress.city}}, {{profile.bifrostAddress.state}}<br /></p>
+                                <p>{{profile.bifrostAddress.country}} - {{profile.bifrostAddress.postcode}}<br /></p>
+                                <p>{{user.fullName}}<br /></p>
+                                <p>{{profile.bifrostAddress.phone}} | {{profile.bifrostAddress.email}}</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="heading">
+                <td style="text-align: center;">Invoice No.</td>
+                <td style="text-align: center;">Invoice Date</td>
+                <td style="text-align: center;">Due Date</td>
+                <td style="text-align: right;">Invoice Amount</td>
+                <td style="text-align: right;">Outstanding Amount</td>
+            </tr>
+            {{#each invoices}}
+            <tr class="details">
+                <td></td>
+                <td style="text-align: right;"></td>
+                <td style="text-align: right;"></td>
+                <td style="text-align: right;"><b>Total Balance Due:</b></td>
+                <td style="text-align: right; background-color:#eee;">${{statement.totalAmount}}</td>
+            </tr>
+            
+        </table>
+
+
+        <table style="margin-top: 30px; border: none; background-color: #eee;" class="information">
+            <td style="border: none; padding: 20px">
+                <h2>How to pay</h2>
+                <p>Acc Name: Cargo Solutions Group Pty Ltd</p>
+                <p>BSB: 063 121</p>
+                <p>Acc Number: 1141 8410</p>
+                <p>Bank: CBA</p>
+                <p>Bank Address: 324 Clayton Road, Clayton, VIC, 3168, Australia</p>
+                <p>Swift Code: CTBAAU2S</p>
+             </td>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+
+		<style>
+			body, html {
+				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+				background-color: white;
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			.invoice-box {
+				max-width: 800px;
+				margin: auto;
+				padding: 30px;
+				background-color: #fff;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+			}
+			table {
+				width: 100%;
+				line-height: 18px; /* Reduced line spacing */
+				text-align: left;
+				border-collapse: collapse;
+			}
+			th, td {
+				padding: 10px; /* Adjusted for reduced row height */
+				border-bottom: 1px solid #dddddd;
+				font-size: 14px; /* Reduced font size */
+			}
+			th {
+				background-color: #f2f2f2;
+				color: #333;
+			}
+			.title img {
+				max-width: 100%;
+				height: auto;
+			}
+			.details, .total, td:nth-child(2) {
+				text-align: right;
+			}
+			td:nth-child(1) { /* Keeping the description column left-aligned */
+				text-align: left;
+			}
+			.heading td {
+				background-color: #f2f2f2; /* Light grey background */
+				color: #333; /* Darker text color for contrast */
+				font-weight: bold;
+				font-size: 16px; /* Increased font size */
+				border-bottom: 1px solid #ddd;
+			}
+			.total-value {
+				color: #333; /* Darker text color for contrast */
+				font-weight: bold;
+				font-size: 18px; /* Slightly larger font size for more emphasis */
+				overflow: auto; /* Ensures the cell contains the floated elements */
+			}
+
+			.bank-details {
+				font-size: 14px; /* Matches the reduced font size for table data */
+				line-height: 14px; /* Reduced line spacing for a tighter look */
+				margin: 0; /* Removes any default margin from paragraphs if applied */
+				padding: 4px 0; /* Minimal padding for spacing between lines */
+			}
+			footer {
+				margin-top: 20px;
+				text-align: center;
+				color: #999;
+				font-size: 12px;
+			}
+			a {
+				color: #007bff;
+				text-decoration: none;
+			}
+			a:hover {
+				text-decoration: underline;
+			}
+			/* Remove default borders for all td and th elements */
+			.invoice-box table td, .invoice-box table th {
+				border: none;
+			}
+
+			@media only screen and (max-width: 600px) {
+				.invoice-box {
+					padding: 20px;
+				}
+				.title {
+					text-align: center;
+				}
+				.title img {
+					margin: auto;
+				}
+				table tr td, table tr th {
+					display: block;
+					text-align: center;
+				}
+				table tr:not(.total) {
+					border-bottom: 2px solid #eeeeee;
+				}
+			}
+			/* Additional class for item rows to reduce height */
+			.item td {
+				padding: 8px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="invoice-box">
+			<table cellpadding="0" cellspacing="0">
+				<tr class="top">
+					<td colspan="5">
+						<table>
+							<tr>
+								<td class="title" style="width:50%">
+									<img src="http://54.252.160.10:4048/csg-3pl-logo-1.png" style="width: 80%; max-width: 150px" />
+									<p class="bank-details">ABN: 71650470590</p>
+									<p class="bank-details">Acc Name: Cargo Solutions Group Pty Ltd</p>
+									<p class="bank-details">Bank: Commonwealth Bank of Australia</p>
+									<p class="bank-details">BSB: 063 121</p>
+									<p class="bank-details">Acc Number: 1141 8410</p>
+									<p class="bank-details">Swift Code: CTBAAU2S</p>
+									<p class="bank-details">Bank Address: 324 Clayton Rd, Clayton, VIC 3168, Australia</p>
+								</td>
+
+								<td >
+									<img width="160px" height="23px" src="{{image}}"/><br/>
+                                    Invoice <strong># {{invoice.invoiceId}}</strong><br />
+									Invoice Period:  {{invoice.startDate}} ~ {{invoice.endDate}}<br/>
+									Invoice Date: {{invoice.invoiceDate}}<br/>
+									Due Date: {{invoice.dueDate}}<br/>
+								    Week: {{invoice.week}} / {{invoice.year}}
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr class="information">
+					<td colspan="5">
+						<table>
+							<tr>
+								<td style="width:50%">
+									CSG3PL<br />
+									62 Goodall Close, Dandenong South <br />
+									VIC 3175, Australia <br />
+									Phone: 0391176197 <br />
+									Email: <a href="mailto:accounts@csghub.com">accounts@csghub.com</a>
+								</td>
+
+								<td>
+									{{profile.companyName}}<br />
+									{{profile.bifrostAddress.address1}}, {{profile.bifrostAddress.address2}}, {{profile.bifrostAddress.unit}}.<br />
+									{{profile.bifrostAddress.city}}, {{profile.bifrostAddress.state}}<br />
+									{{profile.bifrostAddress.country}} -{{profile.bifrostAddress.postcode}}<br />
+									{{user.fullName}}<br />
+									{{profile.bifrostAddress.phone}} | {{profile.bifrostAddress.email}}
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr class="heading">
+					<td style="width: 66.66%;"> Description</td>
+					<td style="text-align: right;">Total</td>
+				</tr>
+				<!--{{items}}-->
+				<tr class="total-value">
+                    <td style="width: 86.66%; text-align: right">Total:</td>
+					<td style="text-align: right">${{total}}</td>
+				</tr>
+				<tr class="total-value">
+                    <td style="width: 86.66%; text-align: right">GST:</td>
+					<td style="text-align: right">${{gst}}</td>
+				</tr>
+				<tr class="total-value">
+                    <td style="width: 86.66%; text-align: right">Total(GST):</td>
+					<td style="text-align: right">${{totalGst}}</td>
+				</tr>
+			</table>
+			<footer>
+				<p>Please send a copy of Remittance to: <a href="mailto:accounts@csghub.com">accounts@csghub.com</a> and also Please quote invoice number as the Reference.</p>
+			</footer>
+		</div>
+	</body>
+</html>
