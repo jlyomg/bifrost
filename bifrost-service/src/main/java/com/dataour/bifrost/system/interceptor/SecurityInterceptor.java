@@ -1,8 +1,6 @@
 package com.dataour.bifrost.system.interceptor;
 
-import com.dataour.bifrost.processor.erp.ERPUserProcessor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class SecurityInterceptor implements HandlerInterceptor {
 
-    @Autowired
-    private ERPUserProcessor erpUserProcessor;
+//    @Autowired
+//    private ERPUserProcessor erpUserProcessor;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {

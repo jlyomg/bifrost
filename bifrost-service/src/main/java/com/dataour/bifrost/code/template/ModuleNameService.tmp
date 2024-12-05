@@ -1,0 +1,23 @@
+package com.dataour.bifrost.code.template;
+
+import com.dataour.bifrost.common.module.response.Resp;
+import com.github.pagehelper.PageInfo;
+
+
+/**
+ * ModuleName Service
+ *
+ * @Author ${author}
+ * @Date ${dateTime}
+ */
+public interface ModuleNameService {
+    Resp<PageInfo<ModuleNameResp>> search(ModuleNameSearchReq searchParams);
+
+    Resp<ModuleNameResp> getDetail(Long id);
+
+    Resp<Boolean> add(ModuleNameAddReq params);
+
+    Resp<Boolean> update(ModuleNameUpdateReq params);
+
+    Resp<Boolean> delete(Long id);
+}

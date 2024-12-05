@@ -13,10 +13,9 @@
         </plugin>
         <jdbcConnection driverClass="${jdbc.driverClass}" connectionURL="${jdbc.url}" userId="${jdbc.username}" password="${jdbc.password}">
         </jdbcConnection>
-        <javaModelGenerator targetPackage="${targetModelPackage}" targetProject="${targetJavaProject}" />
+        <javaModelGenerator targetPackage="${targetModelPackage}" targetProject="${targetJavaProject}"/>
         <sqlMapGenerator targetPackage="${targetXMLPackage}" targetProject="${targetResourcesProject}"/>
-        <javaClientGenerator targetPackage="${targetMapperPackage}" targetProject="${targetJavaProject}"
-                             type="XMLMAPPER"/>
+        <javaClientGenerator targetPackage="${targetMapperPackage}" targetProject="${targetJavaProject}" type="XMLMAPPER"/>
 
         <table tableName="bifrost_tenant" domainObjectName="TenantDO"
                enableCountByExample="true" enableUpdateByExample="true"

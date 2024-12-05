@@ -1,0 +1,96 @@
+package com.dataour.bifrost.code.template;
+
+import com.dataour.bifrost.annotation.CheckPermission;
+import com.dataour.bifrost.common.controller.BaseController;
+import com.dataour.bifrost.common.module.AjaxResult;
+import com.dataour.bifrost.common.module.param.IdParam;
+import com.dataour.bifrost.common.module.request.BillCategoryAddReq;
+import com.dataour.bifrost.common.module.response.Resp;
+import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+/**
+ * ModuleName - API
+ *
+ * @Author ${author}
+ * @Date ${dateTime}
+ */
+@Validated
+@Controller
+@RequestMapping("/moduleName")
+public class ModuleNameController extends BaseController {
+
+    @Autowired
+    private ModuleNameService moduleNameService;
+
+    /**
+     * ModuleName List - Search
+     *
+     * @param
+     * @return
+     */
+    @GetMapping("/list")
+    @ResponseBody
+    @CheckPermission("${projectName}:${menuPath}:moduleName:list")
+    public AjaxResult<PageInfo<ModuleNameResp>> list(ModuleNameSearchReq searchParams) {
+        Resp<PageInfo<ModuleNameResp>> resp = moduleNameService.search(searchParams);
+        return AjaxResult.resp(resp);
+    }
+
+    /**
+     * ModuleName Detail
+     *
+     * @param id Primary ID
+     */
+    @GetMapping("/detail")
+    @CheckPermission("${projectName}:${menuPath}:moduleName:detail")
+    @ResponseBody
+    public AjaxResult<ModuleNameResp> detail(@NotNull Long id) {
+        return AjaxResult.resp(moduleNameService.getDetail(id));
+    }
+
+    /**
+     * 新建租户
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/add")
+    @CheckPermission("bifrost:system:tenant:add")
+    @ResponseBody
+    public AjaxResult<Boolean> add(@RequestBody @Valid BillCategoryAddReq param) {
+        return AjaxResult.resp(moduleNameService.add(param));
+    }
+
+    /**
+     * 修改租户
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/update")
+    @CheckPermission("bifrost:system:tenant:update")
+    @ResponseBody
+    public AjaxResult<Boolean> update(@RequestBody @Valid BillCategoryUpdateReq param) {
+        return AjaxResult.resp(moduleNameService.update(param));
+    }
+
+    /**
+     * 删除租户
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/delete")
+    @CheckPermission("Bill:Admin:bifrostCategories:Delete")
+    @ResponseBody
+    public AjaxResult<Boolean> delete(@NotNull Long id) {
+        return AjaxResult.resp(moduleNameService.delete(id));
+    }
+}

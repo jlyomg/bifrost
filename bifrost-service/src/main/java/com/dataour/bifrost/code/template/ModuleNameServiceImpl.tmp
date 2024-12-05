@@ -1,0 +1,80 @@
+package com.dataour.bifrost.code.template;
+
+import com.aizuda.common.toolkit.CollectionUtils;
+import com.dataour.bifrost.common.enums.RespCodeEnums;
+import com.dataour.bifrost.common.module.response.Resp;
+import com.dataour.bifrost.common.util.BeanUtils;
+import com.dataour.bifrost.common.util.SearchUtils;
+import com.dataour.bifrost.domain.TenantDO;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
+import ${moduleMapperPath}.ModuleNameDOMapper;
+import static com.dataour.bifrost.common.util.ParamUtils.*;
+
+import java.util.List;
+
+import static com.dataour.bifrost.common.util.SearchUtils.transDatas;
+
+/**
+ * ModuleName Service Implements
+ *
+ * @Author ${author}
+ * @Date ${dateTime}
+ */
+@Slf4j
+@Service
+public class ModuleNameServiceImpl implements ModuleNameService {
+    @Autowired
+    private ModuleNameDOMapper moduleNameDOMapper;
+
+    @Override
+    public Resp<PageInfo<ModuleNameResp>> search(ModuleNameSearchReq searchParams) {
+        Example example = new Example(TenantDO.class);
+        Example.Criteria criteria = SearchUtils.handleCommonFields(example, searchParams, "name");
+        PageHelper.startPage(searchParams.getPage(), searchParams.getPageSize());
+        PageInfo<ModuleNameResp> pageInfo = transDatas(new PageInfo<>(moduleNameDOMapper.selectByExample(example)), ModuleNameResp.class);
+        List<ModuleNameResp> billCategoryResps = pageInfo.getList();
+        if (CollectionUtils.isEmpty(billCategoryResps)) {
+            return Resp.success(pageInfo);
+        }
+        return Resp.success(pageInfo);
+    }
+
+
+    @Override
+    public Resp<ModuleNameResp> getDetail(Long id) {
+        return Resp.success(BeanUtils.copyValueWithSuper(moduleNameDOMapper.selectByPrimaryKey(id), new ModuleNameResp()));
+    }
+
+    @Override
+    public Resp<Boolean> add(ModuleNameAddReq param) {
+        try {
+            BillCategoryDO billCategoryDO = fillAddParams(BeanUtils.copyValue(param, new BillCategoryDO()));
+
+            return Resp.success(true);
+        } catch (Exception e) {
+            log.error("Add ModuleName error", e);
+        }
+        return Resp.error(RespCodeEnums.BIZ_ERROR);
+    }
+
+    @Override
+    public Resp<Boolean> update(ModuleNameUpdateReq param) {
+        try {
+            return Resp.success(true);
+        } catch (Exception e) {
+            log.error("Update billCategory error", e);
+        }
+        return Resp.error(RespCodeEnums.BIZ_ERROR);
+    }
+
+    @Override
+    public Resp<Boolean> delete(Long id) {
+        return Resp.success(true);
+    }
+
+}

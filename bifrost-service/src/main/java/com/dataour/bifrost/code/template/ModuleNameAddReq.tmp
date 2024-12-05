@@ -1,0 +1,15 @@
+package #targetModulePackage#.request.search;
+
+import #targetModulePackage#.request.search.BaseSearchReq;
+import lombok.Data;
+
+/**
+ * ModuleName Search Request
+ *
+ * @Author #author#
+ * @Date #dateTime#
+ */
+@Data
+public class ModuleNameAddReq extends BaseSearchReq {
+
+}

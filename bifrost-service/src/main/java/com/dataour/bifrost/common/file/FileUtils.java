@@ -1,5 +1,8 @@
 package com.dataour.bifrost.common.file;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -11,6 +14,8 @@ import java.io.*;
  * @Date: 2018年9月22日 下午10:33:31
  */
 public class FileUtils {
+
+    private static final Logger log = LoggerFactory.getLogger(FileUtils.class);
 
     private FileUtils() {
     }
@@ -87,5 +92,18 @@ public class FileUtils {
             inputStream.read(buff);
             out.write(buff);
         }
+    }
+
+    public static String readContent(String templatePath) {
+        StringBuilder content = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(templatePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            log.error("", e);
+        }
+        return content.toString();
     }
 }

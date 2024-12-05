@@ -1,8 +1,7 @@
 package com.dataour.bifrost.common.util;
 
-import com.github.pagehelper.PageInfo;
-import com.dataour.bifrost.common.module.Page;
 import com.dataour.bifrost.common.module.request.search.BaseSearchReq;
+import com.github.pagehelper.PageInfo;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -51,21 +50,6 @@ public class SearchUtils {
         // 解决mybatis带了criteria参数is_delete拼接多一个and的问题
         criteria.andCondition("1=1");
         return criteria;
-    }
-
-    /**
-     * @param pageInfo
-     * @return
-     */
-    public static Page<Object> trans2Page(PageInfo<Object> pageInfo) {
-        Page<Object> resp = new Page<>();
-        resp.setTotalPages(pageInfo.getPages());
-        resp.setTotalElements(pageInfo.getTotal());
-        resp.setNumberOfElements(pageInfo.getPageSize());
-        resp.setNumber(pageInfo.getPageNum() - 1);
-        resp.setSize(pageInfo.getPageSize());
-        resp.setContent(pageInfo.getList());
-        return resp;
     }
 
     public static PageInfo transDatas(PageInfo pageInfo, Class<?> targetClazz) {
