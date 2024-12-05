@@ -1,1 +1,5 @@
 /.idea/
+/bifrost-api/target/
+/bifrost-common/target/
+/bifrost-dao/target/
+/bifrost-service/target/
