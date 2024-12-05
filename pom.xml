@@ -24,6 +24,7 @@
         <module>bifrost-common</module>
         <module>bifrost-api</module>
         <module>bifrost-dao</module>
+        <module>bifrost-generator</module>
         <module>bifrost-service</module>
     </modules>
 
@@ -170,50 +171,6 @@
                 </configuration>
             </plugin>
         </plugins>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>${spring-boot.version}</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>repackage</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <configuration>
-                        <skipTests>true</skipTests>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <!-- 关闭过滤 -->
-                <filtering>false</filtering>
-            </resource>
-            <resource>
-                <directory>src/main/webapp/</directory>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <!-- 引入所有 匹配文件进行过滤 -->
-                <includes>
-                    <include>application*</include>
-                    <include>bootstrap*</include>
-                    <include>logback*</include>
-                </includes>
-                <!-- 启用过滤 即该资源中的变量将会被过滤器中的值替换 -->
-                <filtering>true</filtering>
-            </resource>
-        </resources>
     </build>
 
     <distributionManagement>

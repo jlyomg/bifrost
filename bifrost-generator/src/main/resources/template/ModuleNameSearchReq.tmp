@@ -1,6 +1,5 @@
 package #targetModulePackage#.request.search;
 
-import #targetModulePackage#.request.search.BaseSearchReq;
 import lombok.Data;
 
 /**

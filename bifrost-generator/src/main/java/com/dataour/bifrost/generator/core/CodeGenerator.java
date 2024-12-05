@@ -1,7 +1,11 @@
-package com.dataour.bifrost.code.generator.core;
+package com.dataour.bifrost.generator.core;
 
+import com.dataour.bifrost.common.module.GeneratorConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
+import org.reflections.util.ClasspathHelper;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,43 +15,63 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 
-import static com.dataour.bifrost.common.file.FileUtils.readContent;
 import static com.dataour.bifrost.common.util.DataUtils.dataEmpty;
 import static com.dataour.bifrost.common.util.DateUtils.formatDate;
 import static com.dataour.bifrost.common.util.StringUtils.*;
 import static java.io.File.separator;
 
 /**
- * CodeGenerator
+ * Code Generator
  *
  * @Author JASON
  * @Date 2024-12-01 00:14:18
  */
 @Slf4j
 public abstract class CodeGenerator {
+    public static final String codeGeneratorDir = "codeGenerator";
     protected static final String keyLowerModuleName = "moduleName";
     protected static final String keyUpperModuleName = "ModuleName";
     protected static final String keyLowerModuleDOName = "moduleDOName";
     protected static final String keyUpperModuleDOName = "ModuleDOName";
     protected static final String configSplitChar = "=";
     /**
-     * 项目路径如：/Users/Jason/IdeaProjects/jly/bifrost_new/bifrost-service
+     * 当前正在执行的项目路径
      */
-    protected static final String projectAbsolutePath = CodeGenerator.class.getProtectionDomain().getCodeSource().getLocation().getPath().replaceAll(separator + "target" + separator + "classes" + separator, "");
+    public static final String targetProjectAbsolutePath = System.getProperty("user.dir");
+    /**
+     * 项目路径如：/Users/Jason/IdeaProjects/jly/bifrost/bifrost-generator
+     */
+    protected static final String projectAbsolutePath = CodeGenerator.class.getProtectionDomain().getCodeSource().getLocation().getPath().replaceAll(getFilePath("target", "classes") + separator, "");
+    private static final String propertiesPath = targetProjectAbsolutePath + separator + "src/main/resources/codeGenerator/generatorConfig.properties";
+
     protected static final Properties properties = new Properties();
 
     public abstract void genCode(Class targetClass, String menuPath);
 
-    public static void run(Class targetClass, String menuPath) {
+    public static void run(GeneratorConfiguration generatorConfiguration) {
+        if (generatorConfiguration == null) {
+            return;
+        }
+        GeneratorConfiguration.Module module = generatorConfiguration.getModule();
+        if (module == null || dataEmpty(module.getDomainReferenceName())) {
+            return;
+        }
         if (properties.isEmpty()) {
-            try (InputStream input = CodeGenerator.class.getClassLoader().getResourceAsStream("codeGenerator" + separator + "generatorConfig.properties")) {
+            try (InputStream input = Files.newInputStream(Paths.get(propertiesPath))) {
                 properties.load(input);
             } catch (IOException ex) {
                 log.error("", ex);
             }
         }
-        // 定义扫描的包名
-        Reflections reflections = new Reflections(properties.getProperty("projectBasePackage") + ".code.generator.core");
+        Class targetClass;
+        try {
+            targetClass = Class.forName(module.getDomainReferenceName());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        // 获取当前类加载器
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        Reflections reflections = new Reflections(new org.reflections.util.ConfigurationBuilder().forPackages(properties.getProperty("projectBasePackage")).addUrls(ClasspathHelper.forClassLoader()));
         // 获取所有 BaseClass 的子类
         Set<Class<? extends CodeGenerator>> subClasses = reflections.getSubTypesOf(CodeGenerator.class);
         // 遍历子类并调用 genCode 方法
@@ -56,13 +80,12 @@ public abstract class CodeGenerator {
                 // 创建子类实例
                 CodeGenerator instance = subClass.getDeclaredConstructor().newInstance();
                 // 调用 genCode 方法
-                instance.genCode(targetClass, menuPath);
+                instance.genCode(targetClass, module.getMenuPath());
             } catch (Exception e) {
                 log.error("", e);
             }
         }
     }
-
 
     /**
      * @param templateFileName ModuleNameSearchReq.tmp
@@ -71,7 +94,7 @@ public abstract class CodeGenerator {
         if (dataEmpty(properties)) {
             return;
         }
-        String codeTemplate = readContent(getCodeAbsolutePath() + getFilePath("template", templateFileName));
+        String codeTemplate = readContent(templateFileName);
         String targetClassName = getTargetClassName(targetClass);
         String moduleClassName = targetClass.getSimpleName();
         // 获取包名+类名
@@ -97,12 +120,12 @@ public abstract class CodeGenerator {
         }
     }
 
-    protected static String getCodeAbsolutePath() {
-        return projectAbsolutePath + separator + "src" + separator + "main" + separator + "java" + separator + properties.getProperty("projectBasePackage").replaceAll("\\.", separator) + separator + "code";
+    protected static String getCodeClassPath() {
+        return "jar:file:" + projectAbsolutePath + "!";
     }
 
-    protected static String getJavaAbsolutePath() {
-        return projectAbsolutePath + properties.getProperty("targetJavaProject");
+    protected static String getTatgetAbsolutePath() {
+        return targetProjectAbsolutePath + properties.getProperty("targetJavaProject");
     }
 
     /**
@@ -126,6 +149,26 @@ public abstract class CodeGenerator {
         String lastStr = getTargetClassName(targetClass) + fileList.get(lastIndex) + ".java";
         fileList.remove(lastIndex);
         fileList.add(lastIndex, lastStr);
-        return getJavaAbsolutePath() + getFilePath(fileList.toArray(new String[0]));
+        return getTatgetAbsolutePath() + getFilePath(fileList.toArray(new String[0]));
+    }
+
+    public static String readContent(String templateFileName) {
+        StringBuilder stringBuilder = new StringBuilder();
+        ResourceLoader resourceLoader = new DefaultResourceLoader();
+        // 文件在 JAR 中的路径
+        String resourcePath = "template" + separator + templateFileName;
+        // 使用 ClassLoader 加载资源
+        try (InputStream inputStream = CodeGenerator.class.getClassLoader().getResourceAsStream(resourcePath)) {
+            if (inputStream == null) {
+                return stringBuilder.toString();
+            }
+            // 读取文件内容
+            Scanner scanner = new Scanner(inputStream).useDelimiter("\\A");
+            String content = scanner.hasNext() ? scanner.next() : "";
+            stringBuilder.append(content).append("\n");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return stringBuilder.toString();
     }
 }

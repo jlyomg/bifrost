@@ -491,7 +491,10 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             return "";
         }
         for (String fileName : fileNames) {
-            buffer.append(separator).append(fileName);
+            if (!fileName.startsWith(separator)) {
+                buffer.append(separator);
+            }
+            buffer.append(fileName);
         }
         return buffer.toString();
     }

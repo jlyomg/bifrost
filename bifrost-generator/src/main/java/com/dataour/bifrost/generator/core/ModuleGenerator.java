@@ -1,4 +1,4 @@
-package com.dataour.bifrost.code.generator.core;
+package com.dataour.bifrost.generator.core;
 
 /**
  * ModuleGenerator
@@ -7,6 +7,9 @@ package com.dataour.bifrost.code.generator.core;
  * @Date 2024-12-01 00:14:18
  */
 public class ModuleGenerator extends CodeGenerator {
+    public ModuleGenerator() {
+    }
+
     @Override
     public void genCode(Class targetClass, String menuPath) {
         genSearchReq(targetClass, menuPath);

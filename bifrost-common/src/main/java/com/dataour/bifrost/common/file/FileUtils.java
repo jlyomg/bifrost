@@ -93,17 +93,4 @@ public class FileUtils {
             out.write(buff);
         }
     }
-
-    public static String readContent(String templatePath) {
-        StringBuilder content = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader(templatePath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                content.append(line).append("\n");
-            }
-        } catch (IOException e) {
-            log.error("", e);
-        }
-        return content.toString();
-    }
 }

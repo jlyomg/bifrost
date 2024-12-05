@@ -7,10 +7,11 @@ import com.dataour.bifrost.domain.TenantDO;
  * Tenant Update Request
  *
  * @Author JASON
- * @Date 2024-12-06 01:15:40
+ * @Date 2024-12-06 05:59:46
  */
 @Data
 public class TenantUpdateReq extends TenantDO {
 
 }
+
 
