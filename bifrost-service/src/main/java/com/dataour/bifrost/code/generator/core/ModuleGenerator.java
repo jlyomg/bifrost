@@ -1,6 +1,4 @@
-package com.dataour.bifrost.code.generator.impl;
-
-import com.dataour.bifrost.code.generator.CodeGenerator;
+package com.dataour.bifrost.code.generator.core;
 
 /**
  * ModuleGenerator

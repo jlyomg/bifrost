@@ -1,6 +1,5 @@
-package com.dataour.bifrost.code.generator;
+package com.dataour.bifrost.code.generator.core;
 
-import com.dataour.bifrost.domain.TenantDO;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 
@@ -39,10 +38,6 @@ public abstract class CodeGenerator {
 
     public abstract void genCode(Class targetClass, String menuPath);
 
-    public static void main(String[] args) {
-        CodeGenerator.run(TenantDO.class, "system");
-    }
-
     public static void run(Class targetClass, String menuPath) {
         if (properties.isEmpty()) {
             try (InputStream input = CodeGenerator.class.getClassLoader().getResourceAsStream("codeGenerator" + separator + "generatorConfig.properties")) {
@@ -52,7 +47,7 @@ public abstract class CodeGenerator {
             }
         }
         // 定义扫描的包名
-        Reflections reflections = new Reflections(properties.getProperty("projectBasePackage") + ".code.generator.impl");
+        Reflections reflections = new Reflections(properties.getProperty("projectBasePackage") + ".code.generator.core");
         // 获取所有 BaseClass 的子类
         Set<Class<? extends CodeGenerator>> subClasses = reflections.getSubTypesOf(CodeGenerator.class);
         // 遍历子类并调用 genCode 方法
