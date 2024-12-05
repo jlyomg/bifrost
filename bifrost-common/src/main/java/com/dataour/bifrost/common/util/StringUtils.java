@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import static java.io.File.separator;
+
 
 /**
  * 字符串工具类
@@ -473,13 +475,24 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return str;
     }
 
-    public static String formatFloat(float f){
-        if (f == (int) f){
-            return String.valueOf((int)f);
-        }else {
+    public static String formatFloat(float f) {
+        if (f == (int) f) {
+            return String.valueOf((int) f);
+        } else {
             // round to 2 decimal places
             DecimalFormat df = new DecimalFormat("0.00");
             return df.format(f);
         }
+    }
+
+    public static String getFilePath(String... fileNames) {
+        StringBuilder buffer = new StringBuilder();
+        if (fileNames == null) {
+            return "";
+        }
+        for (String fileName : fileNames) {
+            buffer.append(separator).append(fileName);
+        }
+        return buffer.toString();
     }
 }

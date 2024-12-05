@@ -1,15 +1,16 @@
-package com.dataour.bifrost.code.template;
+package #targetModulePackage#.request;
 
-import com.dataour.bifrost.common.module.request.search.BaseSearchReq;
 import lombok.Data;
+import #fullClassName#;
 
 /**
- * ModuleName Search Request
+ * ModuleName Update Request
  *
- * @Author ${author}
- * @Date ${dateTime}
+ * @Author #author#
+ * @Date #dateTime#
  */
 @Data
-public class ModuleNameUpdateReq extends BaseSearchReq {
+public class ModuleNameUpdateReq extends #moduleClassName# {
 
 }
+

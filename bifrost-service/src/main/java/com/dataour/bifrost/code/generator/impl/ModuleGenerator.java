@@ -2,22 +2,30 @@ package com.dataour.bifrost.code.generator.impl;
 
 import com.dataour.bifrost.code.generator.CodeGenerator;
 
-import static com.dataour.bifrost.common.file.FileUtils.readContent;
-import static java.io.File.separator;
-
+/**
+ * ModuleGenerator
+ *
+ * @Author JASON
+ * @Date 2024-12-01 00:14:18
+ */
 public class ModuleGenerator extends CodeGenerator {
-    private static final String filePath = separator + "template" + separator + "ModuleNameSearchReq.tmp";
-
     @Override
     public void genCode(Class targetClass, String menuPath) {
-        genModuleNameSearchReq(targetClass, menuPath);
+        genSearchReq(targetClass, menuPath);
+        genAddReq(targetClass, menuPath);
+        genUpdateReq(targetClass, menuPath);
     }
 
-    private void genModuleNameSearchReq(Class targetClass, String menuPath) {
-        String codeTemplate = readContent(getCodeAbsolutePath() + filePath);
-        String targetClassName = getTargetClassName(targetClass);
-        String targetModulePath = separator + properties.getProperty("targetModulePackage").replaceAll("\\.", separator);
-        String fileFullName = getJavaAbsolutePath() + targetModulePath + separator + "request" + separator + "search" + separator + targetClassName + "SearchReq.java";
-        genCodeByTemplate(codeTemplate, fileFullName, targetClassName, menuPath);
+    private void genSearchReq(Class targetClass, String menuPath) {
+        genCodeByTemplate(targetClass, menuPath, "ModuleNameSearchReq.tmp", "request", "search", "SearchReq");
+    }
+
+    private void genAddReq(Class targetClass, String menuPath) {
+        genCodeByTemplate(targetClass, menuPath, "ModuleNameAddReq.tmp", "request", "AddReq");
+    }
+
+    private void genUpdateReq(Class targetClass, String menuPath) {
+        genCodeByTemplate(targetClass, menuPath, "ModuleNameUpdateReq.tmp", "request", "UpdateReq");
+
     }
 }
